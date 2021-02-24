@@ -1,5 +1,4 @@
 #%%
-from pyfm import pylibfm
 from sklearn.feature_extraction import DictVectorizer
 import numpy as np
 import json
