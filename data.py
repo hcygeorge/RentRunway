@@ -1,9 +1,7 @@
 #%%
-from sklearn.feature_extraction import DictVectorizer
 import numpy as np
 import json
 import pandas as pd
-from scipy import sparse
 from sklearn.utils import shuffle
 from sklearn.model_selection import KFold
 
@@ -81,12 +79,8 @@ rating_df3.age[rating_df3.age.isnull()] = age_mean
 raw_df_cat = rating_df3[['user_id', 'item_id', 'fit', 'bust_size', 'rented_for', 'body_type', 'category']]
 raw_df_dummy = pd.get_dummies(raw_df_cat, prefix=['user', 'item', 'fit', 'bust', 'rent', 'body', 'category'], dummy_na=True)
 
-# raw_df_cat = rating_df3[['user_id', 'item_id']]
-# raw_df_dummy = pd.get_dummies(raw_df_cat, prefix=['user', 'item'], dummy_na=True)
-
 #%% Combine cleaned data and convert into matrix
-# cleaned = pd.concat([rating_df3[['weight', 'height', 'age', 'size1', 'rating', 'review_date']], raw_df_dummy], axis=1, copy=False)
-cleaned = pd.concat([rating_df3[['rating', 'review_date']], raw_df_dummy], axis=1, copy=False)
+cleaned = pd.concat([rating_df3[['rating', 'review_date', 'weight', 'height', 'age', 'size1']], raw_df_dummy], axis=1, copy=False)
 
 #%% Release memory
 del raw_df_cat, raw_df_dummy
@@ -104,9 +98,6 @@ cleaned.drop(['review_date'], axis=1, inplace=True)
 boundary = round(len(cleaned) * 0.7)
 train = cleaned.loc[:boundary]
 test = cleaned.loc[boundary:]
-
-# train.user_100157.value_counts()
-# test.user_100157.value_counts()
 
 #%% Kfold
 train = shuffle(train)
